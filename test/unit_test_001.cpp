@@ -41,8 +41,21 @@ unittest_teardown()
 unittest(test_begin)
 {
   TEMT6000 lux(14, 5.0, 1023);
-  lux.begin();
+
   assertEqual(1, 1);
+}
+
+
+unittest(test_resistor)
+{
+  TEMT6000 lux(14, 5.0, 1023);
+
+  for (int i = 1000; i < 200000; i += 1000)
+  {
+    lux.setResistor(i);
+    assertEqual(i, lux.getResistor());
+  }
+
 }
 
 
