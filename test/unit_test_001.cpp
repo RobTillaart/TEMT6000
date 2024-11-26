@@ -40,7 +40,7 @@ unittest_teardown()
 
 unittest(test_begin)
 {
-  TEMT6000 lux(14);
+  TEMT6000 lux(14, 5.0, 1023);
   lux.begin();
   assertEqual(1, 1);
 }
