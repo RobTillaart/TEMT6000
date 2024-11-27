@@ -1,6 +1,6 @@
 {
   "name": "TEMT6000",
-  "keywords": "",
+  "keywords": "angle correction",
   "description": "Arduino library for analog TEMT6000 light / LUX sensor.",
   "authors":
   [
