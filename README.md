@@ -24,16 +24,10 @@ The TEMT6000 is a cheap and small analog light sensor.
 It typically comes on a breakout with only GND, VCC and SIGNAL pins.
 
 The TEMT6000 is most sensitive at 570 nanometre (yellow/green).
+The library does not compensate for wavelength (yet).
+
 To measure the sensor must be pointed straight to the light source.
-Or one should apply the cos rule.
-
-```
-lux = getLUX() x 1/cos(alpha)  
-//  at 60 degrees the sensor sees 50% so the real value is 2x as much.
-```
-where alpha is angle between light source and sensor. See datasheet figure 4.
-
-
+Or one should use **readLUX(times, angle)** to compensate for the angle.
 
 Feedback is welcome, please open an issue.
 
@@ -59,23 +53,34 @@ This is the internal resistor, one can calibrate the device to some extend.
 
 - **uint16_t readRaw(uint8_t times = 1)** returns the average of N reads.
 - **float readLUX(uint8_t times = 1)** returns the average of N reads, converted to LUX.
+- **float readLUX(uint8_t times, float angleDegrees)** returns the average of N reads, 
+converted to LUX, compensated for the angle in degrees (0..90).
+This correction is based upon figure 4 of datasheet.
+0 degrees is right above the sensor, maximum light.
+Returns -1 if angle < 0 or angle >= 89 degrees as it cannot be calculated realistically.
+Probably angles above 85 compensates with a factor 10 so are affecting accuracy a lot.
+
 
 ## Future
 
 
 #### Must
 
-- documentation
+- improve documentation
 
 #### Should
 
 - add examples
-- determine factor from calibrated lux and a raw Read.
-- **correctionFactor(angle)** angle in radians   1/cos(alpha).
+- determine factor from calibrated lux and a readRaw.
+
 
 #### Could
 
-- unit tests 
+- unit tests
+- look for optimizations
+- add correction factor for wavelength (figure 5).
+  - mapFloat(360-570, 0.1-1.0) + mapFloat(570-960, 1.0-0.1)
+  - or example?
 
 #### Wont
 
